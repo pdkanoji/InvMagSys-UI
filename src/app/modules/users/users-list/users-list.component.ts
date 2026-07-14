@@ -12,12 +12,13 @@ import { ApiService } from '../../../core/services/api.service';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { User } from '../../../core/models/auth.model';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule, SearchInputComponent, PaginatorComponent],
+  imports: [CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule, MatCardModule, MatTooltipModule, SearchInputComponent, PaginatorComponent, EmptyStateComponent],
   template: `
     <div class="page-wrapper">
       <div class="page-header">
@@ -26,8 +27,10 @@ import { User } from '../../../core/models/auth.model';
       </div>
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar"><app-search-input placeholder="Search users..." (searchChange)="onSearch($event)"></app-search-input></div>
-          <div class="table-wrapper">
+          <div class="table-toolbar" *ngIf="items.length || search">
+            <app-search-input placeholder="Search users..." (searchChange)="onSearch($event)"></app-search-input>
+          </div>
+          <div class="table-wrapper" *ngIf="items.length; else emptyUsers">
             <table mat-table [dataSource]="items" class="data-table">
               <ng-container matColumnDef="name"><th mat-header-cell *matHeaderCellDef>Name</th><td mat-cell *matCellDef="let r"><div class="user-cell"><div class="user-avatar">{{ r.first_name?.charAt(0) }}{{ r.last_name?.charAt(0) }}</div><div><div>{{ r.first_name }} {{ r.last_name }}</div><div class="text-muted">{{ r.email }}</div></div></div></td></ng-container>
               <ng-container matColumnDef="role"><th mat-header-cell *matHeaderCellDef>Role</th><td mat-cell *matCellDef="let r"><span class="role-tag">{{ r.roles?.name | titlecase }}</span></td></ng-container>
@@ -39,7 +42,10 @@ import { User } from '../../../core/models/auth.model';
               <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
             </table>
           </div>
-          <app-paginator [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
+          <ng-template #emptyUsers>
+            <app-empty-state title="No Records Found" message="No users are available yet. Add a user to start managing access."></app-empty-state>
+          </ng-template>
+          <app-paginator *ngIf="items.length" [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
         </mat-card-content>
       </mat-card>
     </div>

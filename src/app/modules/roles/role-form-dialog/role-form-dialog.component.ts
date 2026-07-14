@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
@@ -22,36 +23,49 @@ export interface RoleFormDialogData {
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, MatDialogModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule,
+    MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule,
   ],
   template: `
-    <h2 mat-dialog-title>{{ isEdit ? 'Edit Role' : 'Create Role' }}</h2>
-
-    <mat-dialog-content>
-      <div class="dialog-error" *ngIf="error$ | async as err">{{ err }}</div>
-
-      <form [formGroup]="form" class="role-form">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" placeholder="e.g. manager" />
-          <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
-          <mat-error *ngIf="form.get('name')?.hasError('minlength')">Minimum 3 characters</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" rows="3" placeholder="Optional description"></textarea>
-        </mat-form-field>
-      </form>
-    </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || (loading$ | async)">
-        <mat-spinner diameter="18" *ngIf="loading$ | async; else btnLabel"></mat-spinner>
-        <ng-template #btnLabel>{{ isEdit ? 'Save' : 'Create' }}</ng-template>
+    <div class="dialog-shell dialog-shell--compact">
+      <button mat-icon-button class="dialog-close-btn" (click)="onCancel()">
+        <mat-icon>close</mat-icon>
       </button>
-    </mat-dialog-actions>
+      <div class="dialog-header">
+        <div class="dialog-icon dialog-icon--info">
+          <mat-icon>admin_panel_settings</mat-icon>
+        </div>
+        <div>
+          <h2 mat-dialog-title class="dialog-title">{{ isEdit ? 'Edit Role' : 'Create Role' }}</h2>
+          <p class="dialog-subtitle">Define the role name and its description for the access model.</p>
+        </div>
+      </div>
+
+      <mat-dialog-content>
+        <div class="dialog-error" *ngIf="error$ | async as err">{{ err }}</div>
+
+        <form [formGroup]="form" class="role-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="e.g. manager" />
+            <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
+            <mat-error *ngIf="form.get('name')?.hasError('minlength')">Minimum 3 characters</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="3" placeholder="Optional description"></textarea>
+          </mat-form-field>
+        </form>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end" class="dialog-actions">
+        <button mat-stroked-button class="dialog-secondary-btn" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button class="dialog-primary-btn" (click)="onSubmit()" [disabled]="form.invalid || (loading$ | async)">
+          <mat-spinner diameter="18" *ngIf="loading$ | async; else btnLabel"></mat-spinner>
+          <ng-template #btnLabel>{{ isEdit ? 'Save' : 'Create' }}</ng-template>
+        </button>
+      </mat-dialog-actions>
+    </div>
   `,
 })
 export class RoleFormDialogComponent implements OnInit, OnDestroy {

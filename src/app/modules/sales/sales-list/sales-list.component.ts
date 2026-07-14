@@ -12,6 +12,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 import { PaymentDialogComponent } from '../../../shared/components/payment-dialog/payment-dialog.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { selectUserPermissionFor } from '../../../store/permissions/permissions.selectors';
 import { Sale } from '../../../core/models/inventory.model';
 
@@ -21,7 +22,7 @@ import { Sale } from '../../../core/models/inventory.model';
   imports: [
     CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatTooltipModule, MatDialogModule,
-    SearchInputComponent, PaginatorComponent,
+    SearchInputComponent, PaginatorComponent, EmptyStateComponent,
   ],
   template: `
     <div class="page-wrapper">
@@ -33,10 +34,10 @@ import { Sale } from '../../../core/models/inventory.model';
       </div>
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar">
+          <div class="table-toolbar" *ngIf="items.length || search">
             <app-search-input placeholder="Search invoice..." (searchChange)="onSearch($event)"></app-search-input>
           </div>
-          <div class="table-wrapper">
+          <div class="table-wrapper" *ngIf="items.length; else emptySales">
             <table mat-table [dataSource]="items" class="data-table">
               <ng-container matColumnDef="number">
                 <th mat-header-cell *matHeaderCellDef>Invoice No</th>
@@ -98,7 +99,10 @@ import { Sale } from '../../../core/models/inventory.model';
               <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
             </table>
           </div>
-          <app-paginator [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
+          <ng-template #emptySales>
+            <app-empty-state title="No Records Found" message="No sales orders are available right now."></app-empty-state>
+          </ng-template>
+          <app-paginator *ngIf="items.length" [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
         </mat-card-content>
       </mat-card>
     </div>

@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { ApiService } from '../../../core/services/api.service';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { selectUserPermissionFor } from '../../../store/permissions/permissions.selectors';
 import { SaleReturn } from '../../../core/models/inventory.model';
 
@@ -22,7 +23,7 @@ import { SaleReturn } from '../../../core/models/inventory.model';
   imports: [
     CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatTooltipModule, MatSelectModule, MatFormFieldModule,
-    SearchInputComponent, PaginatorComponent,
+    SearchInputComponent, PaginatorComponent, EmptyStateComponent,
   ],
   template: `
     <div class="page-wrapper">
@@ -34,7 +35,7 @@ import { SaleReturn } from '../../../core/models/inventory.model';
       </div>
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar">
+          <div class="table-toolbar" *ngIf="items.length || search || statusFilter">
             <app-search-input placeholder="Search return number..." (searchChange)="onSearch($event)"></app-search-input>
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Status</mat-label>
@@ -47,7 +48,7 @@ import { SaleReturn } from '../../../core/models/inventory.model';
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="table-wrapper">
+          <div class="table-wrapper" *ngIf="items.length; else emptySaleReturns">
             <table mat-table [dataSource]="items" class="data-table">
               <ng-container matColumnDef="number">
                 <th mat-header-cell *matHeaderCellDef>Return No</th>
@@ -99,7 +100,10 @@ import { SaleReturn } from '../../../core/models/inventory.model';
               <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
             </table>
           </div>
-          <app-paginator [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
+          <ng-template #emptySaleReturns>
+            <app-empty-state title="No Records Found" message="No sale returns are available for the current filters."></app-empty-state>
+          </ng-template>
+          <app-paginator *ngIf="items.length" [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
         </mat-card-content>
       </mat-card>
     </div>

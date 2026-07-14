@@ -14,6 +14,7 @@ import { logout, loadUser } from '../../../store/auth/auth.actions';
 import { loadPermissions } from '../../../store/permissions/permissions.actions';
 import { selectPermissions } from '../../../store/permissions/permissions.selectors';
 import { ApiService } from '../../../core/services/api.service';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-layout',
@@ -21,14 +22,14 @@ import { ApiService } from '../../../core/services/api.service';
   imports: [
     CommonModule, RouterOutlet, RouterLink, RouterLinkActive,
     MatToolbarModule, MatSidenavModule, MatIconModule,
-    MatButtonModule, MatMenuModule, MatDividerModule,
+    MatButtonModule, MatMenuModule, MatDividerModule, LoadingSpinnerComponent,
   ],
   template: `
     <div class="layout-container">
 
       <!-- ===== TOP BAR ===== -->
       <mat-toolbar class="top-bar">
-        <button mat-icon-button class="hamburger-btn" (click)="toggleSidenav()" style="display:none;">
+        <button mat-icon-button class="hamburger-btn" *ngIf="isMobile" (click)="toggleSidenav()">
           <mat-icon>{{ sidenavOpen ? 'menu_open' : 'menu' }}</mat-icon>
         </button>
 
@@ -80,12 +81,9 @@ import { ApiService } from '../../../core/services/api.service';
 
       <!-- ===== BODY ===== -->
       <div class="main-wrapper">
-        <!-- Mobile backdrop -->
-        <div *ngIf="isMobile && sidenavOpen" class="sidenav-backdrop" (click)="closeSidenav()"></div>
-
         <mat-sidenav-container class="sidenav-container">
           <mat-sidenav
-            [opened]="sidenavOpen && !isMobile"
+            [opened]="sidenavOpen"
             [mode]="isMobile ? 'over' : 'side'"
             class="sidenav"
             [class.sidenav--open]="sidenavOpen && isMobile"
@@ -159,6 +157,7 @@ import { ApiService } from '../../../core/services/api.service';
             <router-outlet></router-outlet>
           </mat-sidenav-content>
         </mat-sidenav-container>
+        <app-loading-spinner></app-loading-spinner>
       </div>
     </div>
   `,

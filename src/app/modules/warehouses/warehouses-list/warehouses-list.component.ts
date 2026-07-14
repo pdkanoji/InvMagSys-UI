@@ -31,7 +31,7 @@ import { Warehouse } from '../../../core/models/inventory.model';
         <div>
           <nav class="breadcrumb">
             <a href="#">Home</a>
-            <mat-icon class="breadcrumb__sep" style="font-size:14px;width:14px;height:14px;">chevron_right</mat-icon>
+            <mat-icon class="breadcrumb__sep icon-muted">chevron_right</mat-icon>
             <span class="breadcrumb__current">Warehouse Management</span>
           </nav>
           <h1 class="page-title">Warehouse Management</h1>
@@ -46,7 +46,7 @@ import { Warehouse } from '../../../core/models/inventory.model';
         <mat-card-header>
           <mat-card-title>Warehouses</mat-card-title>
           <span class="spacer"></span>
-          <mat-form-field appearance="outline" style="max-width:180px;">
+          <mat-form-field appearance="outline" class="filter-field">
             <mat-label>Filter by Status</mat-label>
             <mat-select value="">
               <mat-option value="">All</mat-option>
@@ -67,7 +67,7 @@ import { Warehouse } from '../../../core/models/inventory.model';
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Warehouse Name</th>
                 <td mat-cell *matCellDef="let r">
-                  <div class="fw-600" style="color:#252d3a;">{{ r.name }}</div>
+                  <div class="fw-600">{{ r.name }}</div>
                 </td>
               </ng-container>
 
@@ -100,10 +100,10 @@ import { Warehouse } from '../../../core/models/inventory.model';
                 <td mat-cell *matCellDef="let r">
                   <div class="action-buttons">
                     <a mat-icon-button [routerLink]="[r.id, 'edit']" matTooltip="Edit">
-                      <mat-icon style="color:#3d72cf;">edit</mat-icon>
+                      <mat-icon class="icon-primary">edit</mat-icon>
                     </a>
                     <button mat-icon-button (click)="onDelete(r)" matTooltip="Delete">
-                      <mat-icon style="color:#e53935;">delete_outline</mat-icon>
+                      <mat-icon class="icon-danger">delete_outline</mat-icon>
                     </button>
                   </div>
                 </td>
@@ -123,9 +123,9 @@ import { Warehouse } from '../../../core/models/inventory.model';
       </mat-card>
 
       <!-- Warehouse Stock Overview -->
-      <div class="page-header" style="margin-top:24px;">
-        <h2 style="font-size:1rem;font-weight:600;color:#252d3a;">Warehouse Stock Overview</h2>
-        <mat-form-field appearance="outline" style="max-width:200px;">
+      <div class="page-header page-header--compact">
+        <h2 class="section-title">Warehouse Stock Overview</h2>
+        <mat-form-field appearance="outline" class="filter-field">
           <mat-label>Warehouse</mat-label>
           <mat-select value="main">
             <mat-option value="main">Main Warehouse</mat-option>
@@ -144,15 +144,15 @@ import { Warehouse } from '../../../core/models/inventory.model';
         </div>
         <div class="overview-card">
           <div class="overview-card__label">Stock Value</div>
-          <div class="overview-card__value" style="color:#2a59bb;">{{ overviewStats.stockValue | currency:'USD':'symbol':'1.0-0' }}</div>
+          <div class="overview-card__value overview-value--primary">{{ overviewStats.stockValue | currency:'USD':'symbol':'1.0-0' }}</div>
         </div>
         <div class="overview-card">
           <div class="overview-card__label">Low Stock Items</div>
-          <div class="overview-card__value" style="color:#f57c00;">{{ overviewStats.lowStock }}</div>
+          <div class="overview-card__value overview-value--warning">{{ overviewStats.lowStock }}</div>
         </div>
       </div>
 
-      <div class="charts-grid" style="grid-template-columns:2fr 1fr;margin-top:0;">
+      <div class="charts-grid charts-grid--reduced">
         <!-- Stock by Category bar chart -->
         <mat-card class="chart-card">
           <mat-card-header>

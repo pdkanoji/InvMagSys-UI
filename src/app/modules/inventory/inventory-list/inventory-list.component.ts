@@ -15,6 +15,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { Inventory } from '../../../core/models/inventory.model';
 
 @Component({
@@ -23,7 +24,7 @@ import { Inventory } from '../../../core/models/inventory.model';
   imports: [
     CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatTooltipModule, SearchInputComponent, PaginatorComponent,
-    MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule,
+    MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, EmptyStateComponent,
   ],
   template: `
     <div class="page-wrapper">
@@ -31,7 +32,7 @@ import { Inventory } from '../../../core/models/inventory.model';
         <div>
           <nav class="breadcrumb">
             <a href="#">Home</a>
-            <mat-icon class="breadcrumb__sep" style="font-size:14px;width:14px;height:14px;">chevron_right</mat-icon>
+            <mat-icon class="breadcrumb__sep icon-muted">chevron_right</mat-icon>
             <span class="breadcrumb__current">Stock List</span>
           </nav>
           <h1 class="page-title">Stock List</h1>
@@ -54,7 +55,7 @@ import { Inventory } from '../../../core/models/inventory.model';
 
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar">
+          <div class="table-toolbar" *ngIf="items.length || search || warehouseFilter">
             <app-search-input placeholder="Search products..." (searchChange)="onSearch($event)"></app-search-input>
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>All Categories</mat-label>
@@ -80,15 +81,15 @@ import { Inventory } from '../../../core/models/inventory.model';
             </mat-form-field>
           </div>
 
-          <div class="table-wrapper">
-            <table mat-table [dataSource]="items" class="data-table">
+          <div class="table-wrapper" *ngIf="items.length || !loading; else emptyInventory">
+            <table mat-table [dataSource]="items" class="data-table" *ngIf="items.length; else emptyInventory">
 
               <ng-container matColumnDef="product">
                 <th mat-header-cell *matHeaderCellDef>Product Name</th>
                 <td mat-cell *matCellDef="let r">
                   <div class="product-cell">
                     <div class="product-thumb-placeholder">
-                      <mat-icon style="font-size:16px;color:#aab3c2;">inventory_2</mat-icon>
+                      <mat-icon class="icon-muted">inventory_2</mat-icon>
                     </div>
                     <div>
                       <div class="product-name">{{ r.product?.name }}</div>
@@ -155,10 +156,13 @@ import { Inventory } from '../../../core/models/inventory.model';
               <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
             </table>
 
-            <p class="no-data" *ngIf="!items.length && !loading">No inventory records found</p>
           </div>
 
-          <app-paginator
+          <ng-template #emptyInventory>
+            <app-empty-state title="No Records Found" message="No inventory records are available for the current filter."></app-empty-state>
+          </ng-template>
+
+          <app-paginator *ngIf="items.length"
             [total]="total"
             [pageSize]="limit"
             [pageIndex]="page"
@@ -169,25 +173,33 @@ import { Inventory } from '../../../core/models/inventory.model';
 
       <!-- Stock Modal -->
       <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-        <mat-card class="modal-card" (click)="$event.stopPropagation()">
+        <mat-card class="modal-card background-color" (click)="$event.stopPropagation()">
           <mat-card-header>
-            <mat-card-title>{{ modalTitle }}</mat-card-title>
+            <div class="stock-modal__header">
+              <div>
+                <h2 class="stock-modal__title">{{ modalTitle }}</h2>
+                <p class="stock-modal__subtitle">Update inventory with stock-in, stock-out, or adjustment actions.</p>
+              </div>
+              <button mat-icon-button class="modal-close-btn" type="button" (click)="closeModal()">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
           </mat-card-header>
           <mat-card-content>
-            <form [formGroup]="stockForm" (ngSubmit)="submitStock()" class="form-grid">
-              <mat-form-field appearance="outline" class="form-col-full">
+            <form [formGroup]="stockForm" (ngSubmit)="submitStock()" class="stock-modal__form">
+              <mat-form-field appearance="outline">
                 <mat-label>Product *</mat-label>
                 <mat-select formControlName="product_id">
                   <mat-option *ngFor="let p of products" [value]="p.id">{{ p.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="form-col-full">
+              <mat-form-field appearance="outline">
                 <mat-label>Warehouse *</mat-label>
                 <mat-select formControlName="warehouse_id">
                   <mat-option *ngFor="let w of warehouses" [value]="w.id">{{ w.name }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="form-col-full">
+              <mat-form-field appearance="outline">
                 <mat-label>{{ modalAction === 'adjustment' ? 'New Quantity' : 'Quantity' }} *</mat-label>
                 <input matInput type="number" [formControlName]="modalAction === 'adjustment' ? 'new_quantity' : 'quantity'" min="1" />
               </mat-form-field>
@@ -195,7 +207,7 @@ import { Inventory } from '../../../core/models/inventory.model';
                 <mat-label>Notes</mat-label>
                 <textarea matInput formControlName="notes" rows="2"></textarea>
               </mat-form-field>
-              <div class="form-actions form-col-full">
+              <div class="stock-modal__footer form-col-full">
                 <button mat-stroked-button type="button" (click)="closeModal()">Cancel</button>
                 <button mat-flat-button color="primary" type="submit" [disabled]="stockForm.invalid">Confirm</button>
               </div>

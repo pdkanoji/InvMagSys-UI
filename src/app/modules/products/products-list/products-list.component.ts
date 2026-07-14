@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { loadProducts, deleteProduct } from '../../../store/product/product.actions';
 import { selectProducts, selectProductTotal, selectProductLoading } from '../../../store/product/product.selectors';
 import { ProductService } from '../../../core/services/product.service';
@@ -20,7 +21,7 @@ import { ProductService } from '../../../core/services/product.service';
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, MatTooltipModule, SearchInputComponent, PaginatorComponent],
+  imports: [CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, MatTooltipModule, SearchInputComponent, PaginatorComponent, EmptyStateComponent],
   template: `
     <div class="page-wrapper">
       <div class="page-header">
@@ -40,11 +41,11 @@ import { ProductService } from '../../../core/services/product.service';
 
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar">
+          <div class="table-toolbar" *ngIf="(products$ | async)?.length || search">
             <app-search-input placeholder="Search products..." (searchChange)="onSearch($event)"></app-search-input>
           </div>
 
-          <div class="table-wrapper">
+          <div class="table-wrapper" *ngIf="(products$ | async)?.length; else emptyProducts">
             <table mat-table [dataSource]="(products$ | async) ?? []" class="data-table">
               <ng-container matColumnDef="code">
                 <th mat-header-cell *matHeaderCellDef>Code</th>
@@ -104,7 +105,11 @@ import { ProductService } from '../../../core/services/product.service';
             </table>
           </div>
 
-          <app-paginator [total]="(total$ | async) ?? 0" [pageSize]="limit" [pageIndex]="page"
+          <ng-template #emptyProducts>
+            <app-empty-state title="No Records Found" message="Try adjusting your search or add a new product to get started."></app-empty-state>
+          </ng-template>
+
+          <app-paginator *ngIf="(products$ | async)?.length" [total]="(total$ | async) ?? 0" [pageSize]="limit" [pageIndex]="page"
             (pageChange)="onPageChange($event)"></app-paginator>
         </mat-card-content>
       </mat-card>

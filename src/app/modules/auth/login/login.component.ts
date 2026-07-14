@@ -62,8 +62,8 @@ import { selectAuthLoading, selectAuthError } from '../../../store/auth/auth.sel
         </mat-form-field>
 
         <div class="auth-links">
-          <a routerLink="/auth/register">Sign up</a>
-          <span class="auth-links__sep">|</span>
+          <!--<a routerLink="/auth/register">Sign up</a>
+          <span class="auth-links__sep">|</span>-->
           <a routerLink="/auth/forgot-password">Forgot Password?</a>
         </div>
 

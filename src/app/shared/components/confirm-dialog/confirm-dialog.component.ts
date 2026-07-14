@@ -1,29 +1,49 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
+interface ConfirmDialogData {
+  title?: string;
+  message?: string;
+  confirmText?: string;
+  icon?: string;
+  iconTone?: 'warning' | 'danger' | 'success' | 'info';
+}
 
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
   template: `
-    <div class="confirm-dialog">
-      <div class="confirm-dialog__header">
-        <mat-icon class="confirm-dialog__icon warn">warning</mat-icon>
-        <h2>{{ title }}</h2>
+    <div class="dialog-shell" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
+      <button mat-icon-button class="dialog-close-btn" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+      </button>
+      <div class="dialog-header">
+        <div class="dialog-icon" [ngClass]="'dialog-icon--' + iconTone">
+          <mat-icon>{{ icon }}</mat-icon>
+        </div>
+        <div class="dialog-content">
+          <h2 id="confirm-dialog-title" class="dialog-title">{{ title }}</h2>
+          <p class="dialog-subtitle">{{ message }}</p>
+        </div>
       </div>
-      <p class="confirm-dialog__message">{{ message }}</p>
-      <div class="confirm-dialog__actions">
-        <button mat-stroked-button mat-dialog-close>Cancel</button>
-        <button mat-flat-button color="warn" [mat-dialog-close]="true">{{ confirmText }}</button>
+      <div class="dialog-actions">
+        <button mat-stroked-button class="dialog-secondary-btn" mat-dialog-close>Cancel</button>
+        <button mat-flat-button class="dialog-danger-btn" [mat-dialog-close]="true">{{ confirmText }}</button>
       </div>
     </div>
   `,
 })
 export class ConfirmDialogComponent {
-  @Input() title = 'Confirm Action';
-  @Input() message = 'Are you sure you want to proceed?';
-  @Input() confirmText = 'Delete';
+  private dialogData = inject<ConfirmDialogData | null>(MAT_DIALOG_DATA, { optional: true });
+  private dialogRef = inject(MatDialogRef<ConfirmDialogComponent>, { optional: true });
+
+  @Input() title = this.dialogData?.title ?? 'Confirm Action';
+  @Input() message = this.dialogData?.message ?? 'Are you sure you want to proceed?';
+  @Input() confirmText = this.dialogData?.confirmText ?? 'Delete';
+  @Input() icon = this.dialogData?.icon ?? 'help_outline';
+  @Input() iconTone = this.dialogData?.iconTone ?? 'warning';
 }

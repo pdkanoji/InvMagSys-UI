@@ -15,6 +15,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 import { PurchasePaymentDialogComponent } from '../../../shared/components/purchase-payment-dialog/purchase-payment-dialog.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { selectUserPermissionFor } from '../../../store/permissions/permissions.selectors';
 import { Purchase } from '../../../core/models/inventory.model';
 
@@ -24,7 +25,7 @@ import { Purchase } from '../../../core/models/inventory.model';
   imports: [
     CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatTooltipModule, MatSelectModule, MatFormFieldModule,
-    MatDialogModule, SearchInputComponent, PaginatorComponent,
+    MatDialogModule, SearchInputComponent, PaginatorComponent, EmptyStateComponent,
   ],
   template: `
     <div class="page-wrapper">
@@ -36,7 +37,7 @@ import { Purchase } from '../../../core/models/inventory.model';
       </div>
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar">
+          <div class="table-toolbar" *ngIf="items.length || search || statusFilter">
             <app-search-input placeholder="Search PO number..." (searchChange)="onSearch($event)"></app-search-input>
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Status</mat-label>
@@ -49,7 +50,7 @@ import { Purchase } from '../../../core/models/inventory.model';
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="table-wrapper">
+          <div class="table-wrapper" *ngIf="items.length; else emptyPurchases">
             <table mat-table [dataSource]="items" class="data-table">
               <ng-container matColumnDef="number">
                 <th mat-header-cell *matHeaderCellDef>PO Number</th>
@@ -112,7 +113,10 @@ import { Purchase } from '../../../core/models/inventory.model';
               <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
             </table>
           </div>
-          <app-paginator [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
+          <ng-template #emptyPurchases>
+            <app-empty-state title="No Records Found" message="No purchase orders are available for the current filters."></app-empty-state>
+          </ng-template>
+          <app-paginator *ngIf="items.length" [total]="total" [pageSize]="limit" [pageIndex]="page" (pageChange)="onPage($event)"></app-paginator>
         </mat-card-content>
       </mat-card>
     </div>
