@@ -80,6 +80,15 @@ import { Sale } from '../../../core/models/inventory.model';
                 <td mat-cell *matCellDef="let r">
                   <div class="action-buttons">
                     <a mat-icon-button [routerLink]="r.id" matTooltip="View"><mat-icon>visibility</mat-icon></a>
+                    <button
+                      *ngIf="(salesPerms$ | async)?.edit && r.status !== 'delivered' && r.status !== 'cancelled'"
+                      mat-icon-button
+                      color="accent"
+                      (click)="markDelivered(r)"
+                      matTooltip="Mark Delivered"
+                    >
+                      <mat-icon>local_shipping</mat-icon>
+                    </button>
                     <button mat-icon-button (click)="downloadPDF(r.id)" matTooltip="Download PDF">
                       <mat-icon>picture_as_pdf</mat-icon>
                     </button>
@@ -166,6 +175,17 @@ getBalance(data: Sale): number {
         const idx = this.items.findIndex(s => s.id === updated.id);
         if (idx >= 0) this.items = this.items.map((s, i) => i === idx ? { ...s, ...updated } : s);
       }
+    });
+  }
+
+  markDelivered(sale: Sale): void {
+    this.api.patch<Sale>(`sales/${sale.id}/status`, { status: 'delivered' }).subscribe({
+      next: r => {
+        this.items = this.items.map(s => s.id === sale.id ? { ...s, status: r.data.status } : s);
+      },
+      error: () => {
+        // Optionally handle errors here
+      },
     });
   }
 }

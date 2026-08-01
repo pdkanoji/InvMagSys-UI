@@ -78,6 +78,12 @@ import { createProduct, updateProduct } from '../../../store/product/product.act
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+              <mat-label>Discount Percentage</mat-label>
+              <input matInput type="number" formControlName="discount_percentage" min="0" max="100" />
+              <span matSuffix>%</span>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
               <mat-label>Reorder Level</mat-label>
               <input matInput type="number" formControlName="reorder_level" min="0" />
             </mat-form-field>
@@ -143,6 +149,7 @@ export class ProductFormComponent implements OnInit {
     purchase_price: [0, [Validators.required, Validators.min(0)]],
     selling_price: [0, [Validators.required, Validators.min(0)]],
     tax_percentage: [0],
+    discount_percentage: [0],
     reorder_level: [0],
     is_active: [true],
   });

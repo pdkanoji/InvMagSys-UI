@@ -33,7 +33,7 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
           <mat-icon>{{ sidenavOpen ? 'menu_open' : 'menu' }}</mat-icon>
         </button>
 
-        <div class="topbar-logo">
+        <div class="topbar-logo" routerLink="/dashboard">
           <div class="topbar-logo__icon">
             <mat-icon>inventory_2</mat-icon>
           </div>

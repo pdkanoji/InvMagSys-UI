@@ -29,7 +29,7 @@ import { selectAuthLoading, selectAuthError } from '../../../store/auth/auth.sel
             <path d="M10 18L18 10L26 18L18 26L10 18Z" fill="none" stroke="#3d72cf" stroke-width="2"/>
             <path d="M18 14L22 18L18 22L14 18L18 14Z" fill="#3d72cf"/>
           </svg>
-          <span class="auth-logo__brand"><strong>XBP</strong>AMERICAS</span>
+          <span class="auth-logo__brand"><strong>Inventory</strong>Dashboard</span>
         </div>
       </div>
 

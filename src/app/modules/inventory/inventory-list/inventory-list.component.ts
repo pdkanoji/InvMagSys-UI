@@ -65,14 +65,14 @@ import { Inventory } from '../../../core/models/inventory.model';
             </mat-form-field>
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>Warehouse</mat-label>
-              <mat-select [(value)]="warehouseFilter" (selectionChange)="load()">
+              <mat-select [(value)]="warehouseFilter" (selectionChange)="onFilterChange()">
                 <mat-option value="">All Warehouses</mat-option>
                 <mat-option *ngFor="let w of warehouses" [value]="w.id">{{ w.name }}</mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="filter-field">
-              <mat-label>All Status</mat-label>
-              <mat-select value="">
+              <mat-label>Status</mat-label>
+              <mat-select [(value)]="statusFilter" (selectionChange)="onFilterChange()">
                 <mat-option value="">All Status</mat-option>
                 <mat-option value="in_stock">In Stock</mat-option>
                 <mat-option value="low_stock">Low Stock</mat-option>
@@ -221,7 +221,7 @@ import { Inventory } from '../../../core/models/inventory.model';
 export class InventoryListComponent implements OnInit {
   cols = ['product', 'code', 'warehouse', 'current_stock', 'available', 'reserved', 'damaged', 'reorder', 'status'];
   items: Inventory[] = [];
-  total = 0; page = 1; limit = 20; search = ''; warehouseFilter = ''; loading = false;
+  total = 0; page = 1; limit = 20; search = ''; warehouseFilter = ''; statusFilter = ''; loading = false;
   warehouses: { id: string; name: string }[] = [];
   products: { id: string; name: string }[] = [];
   showModal = false; modalTitle = ''; modalAction: 'stock_in' | 'stock_out' | 'adjustment' = 'stock_in';
@@ -247,11 +247,18 @@ export class InventoryListComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.inventoryService.getInventory({ page: this.page, limit: this.limit, search: this.search, warehouse_id: this.warehouseFilter })
+    this.inventoryService.getInventory({
+      page: this.page,
+      limit: this.limit,
+      search: this.search,
+      warehouse_id: this.warehouseFilter,
+      status: this.statusFilter,
+    })
       .subscribe(r => { this.items = r.data as Inventory[]; this.total = r.meta?.total || 0; this.loading = false; });
   }
 
   onSearch(s: string): void { this.search = s; this.page = 1; this.load(); }
+  onFilterChange(): void { this.page = 1; this.load(); }
   onPage(e: { page: number; limit: number }): void { this.page = e.page; this.limit = e.limit; this.load(); }
 
   openStockIn(): void    { this.modalTitle = 'Stock In';         this.modalAction = 'stock_in';    this.stockForm.reset(); this.showModal = true; }

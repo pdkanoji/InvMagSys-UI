@@ -1,10 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
 import { DashboardService } from '../../core/services/dashboard.service';
@@ -18,8 +21,8 @@ Chart.register(...registerables);
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, RouterLink,
-    MatCardModule, MatProgressSpinnerModule, MatIconModule, MatButtonModule,
+    CommonModule, FormsModule, RouterLink,
+    MatCardModule, MatProgressSpinnerModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule,
     BaseChartDirective, StatCardComponent,
   ],
   template: `
@@ -35,9 +38,20 @@ Chart.register(...registerables);
           </nav>
           <h1 class="page-title">Dashboard</h1>
         </div>
-        <div class="dashboard-date">
-          <mat-icon>calendar_today</mat-icon>
-          <span>{{ dateRangeLabel }}</span>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+         <!-- <mat-form-field appearance="outline" style="min-width:220px;" *ngIf="!isMobile">
+            <mat-label>Search dashboard</mat-label>
+            <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Search activities" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>-->
+          <button *ngIf="isMobile" mat-flat-button color="primary" routerLink="/sales">
+            <mat-icon>point_of_sale</mat-icon>
+            Sales
+          </button>
+          <div class="dashboard-date">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ dateRangeLabel }}</span>
+          </div>
         </div>
       </div>
 
@@ -170,7 +184,7 @@ Chart.register(...registerables);
             <a class="view-all-link" routerLink="/inventory/transactions">View All</a>
           </mat-card-header>
           <mat-card-content>
-            <table class="recent-table" *ngIf="data.recentTransactions.length; else noData">
+            <table class="recent-table" *ngIf="filteredTransactions.length; else noData">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -182,7 +196,7 @@ Chart.register(...registerables);
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let t of data.recentTransactions">
+                <tr *ngFor="let t of filteredTransactions">
                   <td>{{ t.created_at | date:'dd MMM yyyy, HH:mm' }}</td>
                   <td>
                     <span class="badge badge--{{ getTypeColor(t.transaction_type) }}">
@@ -197,7 +211,7 @@ Chart.register(...registerables);
               </tbody>
             </table>
             <ng-template #noData>
-              <p class="no-data">No recent transactions</p>
+              <p class="no-data">{{ searchTerm ? 'No matching activities found' : 'No recent transactions' }}</p>
             </ng-template>
           </mat-card-content>
         </mat-card>
@@ -210,6 +224,9 @@ export class DashboardComponent implements OnInit {
   loading = true;
   data: DashboardData | null = null;
   dateRangeLabel = '';
+  searchTerm = '';
+  isMobile = false;
+  filteredTransactions: DashboardData['recentTransactions'] = [];
   private dashboardService = inject(DashboardService);
 
   lineChartData: ChartData<'line'> = { labels: [], datasets: [] };
@@ -244,15 +261,22 @@ export class DashboardComponent implements OnInit {
     },
   };
 
+  @HostListener('window:resize')
+  onResize(): void {
+    this.isMobile = window.innerWidth <= 960;
+  }
+
   ngOnInit(): void {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), 1);
-    this.dateRangeLabel = `${this.fmt(start)} - ${this.fmt(now)}`;
+    this.dateRangeLabel = `₹{this.fmt(start)} - ₹{this.fmt(now)}`;
+    this.onResize();
 
     this.dashboardService.getDashboard().subscribe({
       next: res => {
         this.data = res.data;
         this.setupCharts(res.data);
+        // this.applySearch();
         this.loading = false;
       },
       error: () => { this.loading = false; },
@@ -262,6 +286,27 @@ export class DashboardComponent implements OnInit {
   private fmt(d: Date): string {
     return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   }
+
+  // onSearchChange(): void {
+  //   this.applySearch();
+  // }
+
+  // private applySearch(): void {
+  //   if (!this.data) {
+  //     this.filteredTransactions = [];
+  //     return;
+  //   }
+
+  //   const term = this.searchTerm.trim().toLowerCase();
+  //   this.filteredTransactions = this.data.recentTransactions.filter(t => {
+  //     const haystack = [
+  //       t.transaction_type,
+  //       t.product?.name,
+  //       t.quantity?.toString(),
+  //     ].filter(Boolean).join(' ').toLowerCase();
+  //     return haystack.includes(term);
+  //   });
+  // }
 
   setupCharts(data: DashboardData): void {
     this.lineChartData = {

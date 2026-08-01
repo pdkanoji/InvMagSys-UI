@@ -5,19 +5,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ApiService } from '../../../core/services/api.service';
 import { Sale } from '../../../core/models/inventory.model';
 
 @Component({
   selector: 'app-sale-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatTableModule],
+  imports: [CommonModule, RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatSnackBarModule],
   template: `
     <div class="page-wrapper">
       <div class="page-header">
         <div><h1 class="page-title">Sales Order Detail</h1><p class="page-subtitle">{{ sale?.sale_number }}</p></div>
         <div class="header-actions">
-          <button mat-stroked-button (click)="downloadPDF()"><mat-icon>picture_as_pdf</mat-icon> Download Invoice</button>
+          <button mat-stroked-button color="accent" *ngIf="sale?.status !== 'delivered' && sale?.status !== 'cancelled'" (click)="markAsDelivered()">
+          <mat-icon>local_shipping</mat-icon> Mark Delivered
+        </button>
+        <button mat-stroked-button (click)="downloadPDF()"><mat-icon>picture_as_pdf</mat-icon> Download Invoice</button>
           <a mat-stroked-button routerLink="/sales"><mat-icon>arrow_back</mat-icon> Back</a>
         </div>
       </div>
@@ -52,13 +56,27 @@ import { Sale } from '../../../core/models/inventory.model';
 })
 export class SaleDetailComponent implements OnInit {
   sale: Sale | null = null; cols = ['product','quantity','unit_price','total'];
-  private api = inject(ApiService); private route = inject(ActivatedRoute);
+  private api = inject(ApiService); private route = inject(ActivatedRoute); private snackBar = inject(MatSnackBar);
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) this.api.get<Sale>(`sales/${id}`).subscribe(r => this.sale = r.data);
   }
   getStatusColor(s: string): string { return { pending: 'warning', confirmed: 'info', delivered: 'success', cancelled: 'danger' }[s] || 'neutral'; }
   getPaymentColor(s: string): string { return { unpaid: 'danger', partial: 'warning', paid: 'success' }[s] || 'neutral'; }
+
+  markAsDelivered(): void {
+    if (!this.sale) return;
+    this.api.patch<Sale>(`sales/${this.sale.id}/status`, { status: 'delivered' }).subscribe({
+      next: r => {
+        this.sale = { ...this.sale!, status: r.data.status };
+        this.snackBar.open('Sales order marked as Delivered', 'Close', { duration: 2000 });
+      },
+      error: err => {
+        this.snackBar.open(err.error?.message || 'Failed to update status', 'Close', { duration: 2000 });
+      },
+    });
+  }
+
   downloadPDF(): void {
     if (!this.sale) return;
     this.api.getBlob(`sales/${this.sale.id}/pdf`).subscribe(blob => {

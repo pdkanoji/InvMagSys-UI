@@ -93,7 +93,23 @@ export class SaleFormComponent implements OnInit {
 
   onProductSelect(event: { value: string }, i: number): void {
     const product = this.products.find(p => p.id === event.value);
-    if (product) { this.itemsArray.at(i).patchValue({ unit_price: product.selling_price, tax_percentage: product.tax_percentage }); this.calcTotals(); }
+    if (!product) return;
+
+    const itemControl = this.itemsArray.at(i);
+    itemControl.patchValue({ unit_price: product.selling_price, tax_percentage: product.tax_percentage });
+
+    this.api
+      .get<{ price: number }>('sales/last-price', { product_id: product.id, customer_id: this.form.value.customer_id })
+      .subscribe({
+        next: r => {
+          const price = r.data?.price;
+          if (price !== null && price !== undefined) {
+            itemControl.patchValue({ unit_price: price });
+          }
+          this.calcTotals();
+        },
+        error: () => this.calcTotals(),
+      });
   }
 
   getItemTotal(i: number): number {
