@@ -112,7 +112,7 @@ import { SaleReturn } from '../../../core/models/inventory.model';
 export class SaleReturnsListComponent implements OnInit {
   cols = ['number', 'sale', 'customer', 'date', 'total', 'status', 'actions'];
   items: SaleReturn[] = [];
-  total = 0; page = 1; limit = 20; search = ''; statusFilter = '';
+  total = 0; page = 1; limit = 10; search = ''; statusFilter = '';
 
   private api = inject(ApiService);
   private snackBar = inject(MatSnackBar);

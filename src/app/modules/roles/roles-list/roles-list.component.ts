@@ -107,7 +107,7 @@ import { Actions, ofType } from '@ngrx/effects';
 export class RolesListComponent implements OnInit, OnDestroy {
   cols = ['name', 'description', 'created_by', 'created_at', 'actions'];
   page = 1;
-  limit = 20;
+  limit = 10;
   search = '';
 
   private store = inject(Store);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { ApiResponse, PaginationParams, Product } from '../models/inventory.model';
+import { ApiResponse, PaginationParams, Product, ProductImportSummary } from '../models/inventory.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -31,9 +31,13 @@ export class ProductService {
     return this.api.getBlob('products/export');
   }
 
-  import(file: File): Observable<ApiResponse<unknown>> {
+  downloadSample(): Observable<Blob> {
+    return this.api.getBlob('products/import-sample');
+  }
+
+  import(file: File): Observable<ApiResponse<ProductImportSummary>> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.api.postFormData('products/bulk-import', formData);
+    return this.api.postFormData<ProductImportSummary>('products/bulk-import', formData);
   }
 }

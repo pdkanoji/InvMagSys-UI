@@ -161,6 +161,19 @@ export interface Sale {
   sale_items?: SaleItem[];
 }
 
+export interface ProductImportFailureRecord {
+  rowNumber: number;
+  product: string;
+  reason: string;
+}
+
+export interface ProductImportSummary {
+  processed: number;
+  imported: number;
+  failed: number;
+  failed_records: ProductImportFailureRecord[];
+}
+
 export interface Notification {
   id: string;
   type: 'low_stock' | 'out_of_stock' | 'expiry' | 'pending_payment' | 'system';

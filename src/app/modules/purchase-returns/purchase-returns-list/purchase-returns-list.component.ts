@@ -112,7 +112,7 @@ import { PurchaseReturn } from '../../../core/models/inventory.model';
 export class PurchaseReturnsListComponent implements OnInit {
   cols = ['number', 'purchase', 'supplier', 'date', 'total', 'status', 'actions'];
   items: PurchaseReturn[] = [];
-  total = 0; page = 1; limit = 20; search = ''; statusFilter = '';
+  total = 0; page = 1; limit = 10; search = ''; statusFilter = '';
 
   private api = inject(ApiService);
   private snackBar = inject(MatSnackBar);

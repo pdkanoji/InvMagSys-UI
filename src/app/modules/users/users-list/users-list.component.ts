@@ -53,7 +53,7 @@ import { User } from '../../../core/models/auth.model';
 })
 export class UsersListComponent implements OnInit {
   cols = ['name','role','phone','last_login','status','actions'];
-  items: User[] = []; total = 0; page = 1; limit = 20; search = '';
+  items: User[] = []; total = 0; page = 1; limit = 10; search = '';
   private api = inject(ApiService); private dialog = inject(MatDialog); private snackBar = inject(MatSnackBar);
   ngOnInit(): void { this.load(); }
   load(): void { this.api.get<User[]>('users', { page: this.page, limit: this.limit, search: this.search }).subscribe(r => { this.items = r.data; this.total = r.meta?.total || 0; }); }

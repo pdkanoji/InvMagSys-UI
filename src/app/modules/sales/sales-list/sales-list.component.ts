@@ -122,7 +122,7 @@ export class SalesListComponent implements OnInit {
   items: Sale[] = [];
   total = 0;
   page = 1;
-  limit = 20;
+  limit = 10;
   search = '';
 
   private api = inject(ApiService);

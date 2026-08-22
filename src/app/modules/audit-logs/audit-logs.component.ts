@@ -45,7 +45,7 @@ import { AuditLog } from '../../core/models/inventory.model';
 })
 export class AuditLogsComponent implements OnInit {
   cols = ['user','action','module','ip','date'];
-  items: AuditLog[] = []; total = 0; page = 1; limit = 20; moduleFilter = ''; actionFilter = '';
+  items: AuditLog[] = []; total = 0; page = 1; limit = 10; moduleFilter = ''; actionFilter = '';
   private api = inject(ApiService);
   ngOnInit(): void { this.load(); }
   load(): void { this.api.get<AuditLog[]>('audit-logs', { page: this.page, limit: this.limit, module: this.moduleFilter, action: this.actionFilter }).subscribe(r => { this.items = r.data; this.total = r.meta?.total || 0; }); }

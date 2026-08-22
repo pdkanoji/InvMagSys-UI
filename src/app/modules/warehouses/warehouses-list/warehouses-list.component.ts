@@ -189,7 +189,7 @@ import { Warehouse } from '../../../core/models/inventory.model';
 export class WarehousesListComponent implements OnInit {
   cols = ['no', 'name', 'location', 'contact_person', 'capacity', 'status', 'actions'];
   items: Warehouse[] = [];
-  total = 0; page = 1; limit = 20;
+  total = 0; page = 1; limit = 10;
 
   overviewStats = { totalProducts: 0, totalStock: 0, stockValue: 0, lowStock: 0 };
 

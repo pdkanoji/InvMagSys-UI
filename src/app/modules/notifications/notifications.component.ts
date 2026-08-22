@@ -47,7 +47,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   `,
 })
 export class NotificationsComponent implements OnInit {
-  items: Notification[] = []; total = 0; page = 1; limit = 20;
+  items: Notification[] = []; total = 0; page = 1; limit = 10;
   private api = inject(ApiService); private snackBar = inject(MatSnackBar);
   ngOnInit(): void { this.load(); }
   load(): void { this.api.get<Notification[]>('notifications', { page: this.page, limit: this.limit }).subscribe(r => { this.items = r.data; this.total = r.meta?.total || 0; }); }

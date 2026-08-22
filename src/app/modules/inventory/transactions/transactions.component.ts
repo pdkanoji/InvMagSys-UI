@@ -45,7 +45,7 @@ import { PaginatorComponent } from '../../../shared/components/paginator/paginat
 })
 export class TransactionsComponent implements OnInit {
   cols = ['product','warehouse','type','quantity','notes','date'];
-  items: unknown[] = []; total = 0; page = 1; limit = 20; typeFilter = '';
+  items: unknown[] = []; total = 0; page = 1; limit = 10; typeFilter = '';
   private inventoryService = inject(InventoryService);
   ngOnInit(): void { this.load(); }
   load(): void {

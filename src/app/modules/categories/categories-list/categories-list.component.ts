@@ -53,7 +53,7 @@ import { Category } from '../../../core/models/inventory.model';
 })
 export class CategoriesListComponent implements OnInit {
   cols = ['code','name','parent','description','status','actions'];
-  items: Category[] = []; total = 0; page = 1; limit = 20; search = '';
+  items: Category[] = []; total = 0; page = 1; limit = 10; search = '';
   private api = inject(ApiService); private dialog = inject(MatDialog); private snackBar = inject(MatSnackBar);
 
   ngOnInit(): void { this.load(); }

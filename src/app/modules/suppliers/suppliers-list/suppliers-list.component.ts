@@ -56,7 +56,7 @@ import { Supplier } from '../../../core/models/inventory.model';
 })
 export class SuppliersListComponent implements OnInit {
   cols = ['code','name','contact_person','email','mobile','city','gst','status','actions'];
-  items: Supplier[] = []; total = 0; page = 1; limit = 20; search = '';
+  items: Supplier[] = []; total = 0; page = 1; limit = 10; search = '';
   private api = inject(ApiService); private dialog = inject(MatDialog); private snackBar = inject(MatSnackBar);
   ngOnInit(): void { this.load(); }
   load(): void { this.api.get<Supplier[]>('suppliers', { page: this.page, limit: this.limit, search: this.search }).subscribe(r => { this.items = r.data; this.total = r.meta?.total || 0; }); }

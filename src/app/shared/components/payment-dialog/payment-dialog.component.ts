@@ -106,7 +106,7 @@ export class PaymentDialogComponent {
   }
 
   form = this.fb.group({
-    amount: [null as number | null, [Validators.required, Validators.min(0.01)]],
+    amount: [this.balance, [Validators.required, Validators.min(0.01)]],
     payment_method: ['cash', Validators.required],
     payment_date: [new Date(), Validators.required],
     notes: [''],

@@ -31,10 +31,7 @@ import { ProductService } from '../../../core/services/product.service';
         </div>
         <div class="header-actions">
           <button mat-stroked-button (click)="onExport()"><mat-icon>download</mat-icon> Export</button>
-          <label mat-stroked-button class="import-btn">
-            <mat-icon>upload</mat-icon> Import
-            <input type="file" accept=".xlsx,.csv" hidden (change)="onImport($event)" />
-          </label>
+          <a mat-stroked-button routerLink="import"><mat-icon>upload</mat-icon> Import</a>
           <a mat-flat-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Product</a>
         </div>
       </div>
@@ -118,7 +115,7 @@ import { ProductService } from '../../../core/services/product.service';
 })
 export class ProductsListComponent implements OnInit {
   displayedColumns = ['code', 'name', 'category', 'purchase_price', 'selling_price', 'tax_percentage', 'reorder_level', 'status', 'actions'];
-  page = 1; limit = 20; search = '';
+  page = 1; limit = 10; search = '';
   private store = inject(Store);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
@@ -158,13 +155,4 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
-  onImport(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.productService.import(file).subscribe({
-        next: res => { this.snackBar.open(res.message, 'Close', { duration: 3000 }); this.loadProducts(); },
-        error: () => this.snackBar.open('Import failed', 'Close', { duration: 3000 }),
-      });
-    }
-  }
 }

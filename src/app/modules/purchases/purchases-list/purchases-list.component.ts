@@ -125,7 +125,7 @@ import { Purchase } from '../../../core/models/inventory.model';
 export class PurchasesListComponent implements OnInit {
   cols = ['number', 'supplier', 'date', 'total', 'status', 'payment', 'actions'];
   items: Purchase[] = [];
-  total = 0; page = 1; limit = 20; search = ''; statusFilter = '';
+  total = 0; page = 1; limit = 10; search = ''; statusFilter = '';
 
   private api = inject(ApiService);
   private snackBar = inject(MatSnackBar);

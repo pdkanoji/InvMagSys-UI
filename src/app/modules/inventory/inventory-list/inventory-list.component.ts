@@ -221,7 +221,7 @@ import { Inventory } from '../../../core/models/inventory.model';
 export class InventoryListComponent implements OnInit {
   cols = ['product', 'code', 'warehouse', 'current_stock', 'available', 'reserved', 'damaged', 'reorder', 'status'];
   items: Inventory[] = [];
-  total = 0; page = 1; limit = 20; search = ''; warehouseFilter = ''; statusFilter = ''; loading = false;
+  total = 0; page = 1; limit = 10; search = ''; warehouseFilter = ''; statusFilter = ''; loading = false;
   warehouses: { id: string; name: string }[] = [];
   products: { id: string; name: string }[] = [];
   showModal = false; modalTitle = ''; modalAction: 'stock_in' | 'stock_out' | 'adjustment' = 'stock_in';
