@@ -73,7 +73,7 @@ Chart.register(...registerables);
           </app-stat-card>
           <app-stat-card
             label="Total Stock Value"
-            [value]="(data.totalPurchaseAmount | currency:'USD':'symbol':'1.0-0') ?? ''"
+            [value]="(data.totalPurchaseAmount | currency:'INR':'symbol':'1.0-0') ?? ''"
             icon="account_balance_wallet"
             color="info"
             [trend]="6.9">
@@ -98,21 +98,21 @@ Chart.register(...registerables);
         <div class="stats-grid" style="margin-top:-8px;">
           <app-stat-card
             label="Total Sales"
-            [value]="(data.totalSalesAmount | currency:'USD':'symbol':'1.0-0') ?? ''"
+            [value]="(data.totalSalesAmount | currency:'INR':'symbol':'1.0-0') ?? ''"
             icon="point_of_sale"
             color="success"
             [trend]="15.9">
           </app-stat-card>
           <app-stat-card
             label="Total Purchases"
-            [value]="(data.totalPurchaseAmount | currency:'USD':'symbol':'1.0-0') ?? ''"
+            [value]="(data.totalPurchaseAmount | currency:'INR':'symbol':'1.0-0') ?? ''"
             icon="shopping_bag"
             color="info"
             [trend]="16.7">
           </app-stat-card>
           <app-stat-card
             label="Total Profit"
-            [value]="(data.totalProfit | currency:'USD':'symbol':'1.0-0') ?? ''"
+            [value]="(data.totalProfit | currency:'INR':'symbol':'1.0-0') ?? ''"
             icon="trending_up"
             [color]="data.totalProfit >= 0 ? 'success' : 'danger'"
             [trend]="32.4">
@@ -184,7 +184,7 @@ Chart.register(...registerables);
             <a class="view-all-link" routerLink="/inventory/transactions">View All</a>
           </mat-card-header>
           <mat-card-content>
-            <table class="recent-table" *ngIf="filteredTransactions.length; else noData">
+            <table class="recent-table" *ngIf="data.recentTransactions.length; else noData">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -196,7 +196,7 @@ Chart.register(...registerables);
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let t of filteredTransactions">
+                <tr *ngFor="let t of data.recentTransactions">
                   <td>{{ t.created_at | date:'dd MMM yyyy, HH:mm' }}</td>
                   <td>
                     <span class="badge badge--{{ getTypeColor(t.transaction_type) }}">
@@ -226,7 +226,7 @@ export class DashboardComponent implements OnInit {
   dateRangeLabel = '';
   searchTerm = '';
   isMobile = false;
-  filteredTransactions: DashboardData['recentTransactions'] = [];
+  // filteredTransactions: DashboardData['recentTransactions'] = [];
   private dashboardService = inject(DashboardService);
 
   lineChartData: ChartData<'line'> = { labels: [], datasets: [] };
@@ -269,7 +269,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), 1);
-    this.dateRangeLabel = `₹{this.fmt(start)} - ₹{this.fmt(now)}`;
+    this.dateRangeLabel = `${this.fmt(start)} - ${this.fmt(now)}`;
     this.onResize();
 
     this.dashboardService.getDashboard().subscribe({

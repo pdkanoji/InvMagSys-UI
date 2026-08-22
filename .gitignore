@@ -1,1 +1,8 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Angular
+.angular/
+dist/
+tmp/
+out-tsc/
