@@ -27,7 +27,7 @@ import { Inventory } from '../../../core/models/inventory.model';
     MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, EmptyStateComponent,
   ],
   template: `
-    <div class="page-wrapper">
+    <div class="page-wrapper inventory-page">
       <div class="page-header">
         <div>
           <nav class="breadcrumb">
@@ -55,7 +55,7 @@ import { Inventory } from '../../../core/models/inventory.model';
 
       <mat-card class="table-card">
         <mat-card-content>
-          <div class="table-toolbar" *ngIf="items.length || search || warehouseFilter">
+          <div class="table-toolbar inventory-filter-toolbar" *ngIf="items.length || search || warehouseFilter">
             <app-search-input placeholder="Search products..." (searchChange)="onSearch($event)"></app-search-input>
             <mat-form-field appearance="outline" class="filter-field">
               <mat-label>All Categories</mat-label>

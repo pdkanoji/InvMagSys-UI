@@ -157,6 +157,23 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
             <router-outlet></router-outlet>
           </mat-sidenav-content>
         </mat-sidenav-container>
+        <nav class="mobile-bottom-nav" *ngIf="isMobile" aria-label="Main navigation">
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="mobile-bottom-nav__item">
+            <mat-icon>grid_view</mat-icon><span>Home</span>
+          </a>
+          <a *ngIf="(perms$ | async)?.['products']?.view" routerLink="/products" routerLinkActive="active" class="mobile-bottom-nav__item">
+            <mat-icon>inventory_2</mat-icon><span>Products</span>
+          </a>
+          <a *ngIf="(perms$ | async)?.['inventory']?.view" routerLink="/inventory" routerLinkActive="active" class="mobile-bottom-nav__item">
+            <mat-icon>layers</mat-icon><span>Stock</span>
+          </a>
+          <a *ngIf="(perms$ | async)?.['sales']?.view" routerLink="/sales" routerLinkActive="active" class="mobile-bottom-nav__item">
+            <mat-icon>receipt_long</mat-icon><span>Sales</span>
+          </a>
+          <button type="button" class="mobile-bottom-nav__item" (click)="toggleSidenav()" aria-label="Open all navigation">
+            <mat-icon>apps</mat-icon><span>More</span>
+          </button>
+        </nav>
         <app-loading-spinner></app-loading-spinner>
       </div>
     </div>

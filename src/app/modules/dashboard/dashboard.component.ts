@@ -26,7 +26,7 @@ Chart.register(...registerables);
     BaseChartDirective, StatCardComponent,
   ],
   template: `
-    <div class="page-wrapper">
+    <div class="page-wrapper dashboard-page">
 
       <!-- Header -->
       <div class="page-header">
