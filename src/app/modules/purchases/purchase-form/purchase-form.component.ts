@@ -12,12 +12,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../core/services/api.service';
+import { ClearZeroOnFocusDirective } from '../../../shared/directives/clear-zero-on-focus.directive';
 
 
 @Component({
   selector: 'app-purchase-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, ClearZeroOnFocusDirective],
   template: `
     <div class="page-wrapper">
       <div class="page-header">
@@ -100,7 +101,7 @@ import { ApiService } from '../../../core/services/api.service';
 
             <div class="form-actions">
               <a mat-stroked-button routerLink="/purchases">Cancel</a>
-              <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+              <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid || loading">
                 {{ loading ? 'Creating...' : 'Create Purchase Order' }}
               </button>
             </div>

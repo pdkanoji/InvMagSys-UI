@@ -31,7 +31,7 @@ import { ApiService } from '../../../core/services/api.service';
             <div class="form-col-full toggle-field"><mat-slide-toggle formControlName="is_active" color="primary">Active</mat-slide-toggle></div>
             <div class="form-actions form-col-full">
               <a mat-stroked-button routerLink="/categories">Cancel</a>
-              <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">{{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}</button>
+              <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid || loading">{{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}</button>
             </div>
           </form>
         </mat-card-content>

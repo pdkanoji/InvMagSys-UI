@@ -17,6 +17,7 @@ import { SearchInputComponent } from '../../../shared/components/search-input/se
 import { PaginatorComponent } from '../../../shared/components/paginator/paginator.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { Inventory } from '../../../core/models/inventory.model';
+import { ClearZeroOnFocusDirective } from '../../../shared/directives/clear-zero-on-focus.directive';
 
 @Component({
   selector: 'app-inventory-list',
@@ -24,7 +25,7 @@ import { Inventory } from '../../../core/models/inventory.model';
   imports: [
     CommonModule, RouterLink, MatTableModule, MatButtonModule, MatIconModule,
     MatCardModule, MatTooltipModule, SearchInputComponent, PaginatorComponent,
-    MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, EmptyStateComponent,
+    MatFormFieldModule, MatSelectModule, MatInputModule, ReactiveFormsModule, EmptyStateComponent, ClearZeroOnFocusDirective,
   ],
   template: `
     <div class="page-wrapper inventory-page">
@@ -41,7 +42,7 @@ import { Inventory } from '../../../core/models/inventory.model';
           <a mat-stroked-button routerLink="transactions">
             <mat-icon>history</mat-icon> Transactions
           </a>
-          <button mat-flat-button color="primary" (click)="openStockIn()">
+          <button mat-stroked-button color="primary" (click)="openStockIn()">
             <mat-icon>add</mat-icon> Stock In
           </button>
           <button mat-stroked-button color="warn" (click)="openStockOut()">
@@ -209,7 +210,7 @@ import { Inventory } from '../../../core/models/inventory.model';
               </mat-form-field>
               <div class="stock-modal__footer form-col-full">
                 <button mat-stroked-button type="button" (click)="closeModal()">Cancel</button>
-                <button mat-flat-button color="primary" type="submit" [disabled]="stockForm.invalid">Confirm</button>
+                <button mat-stroked-button color="primary" type="submit" [disabled]="stockForm.invalid">Confirm</button>
               </div>
             </form>
           </mat-card-content>

@@ -50,7 +50,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
               <button mat-stroked-button (click)="downloadReport(report, 'csv')">
                 <mat-icon>description</mat-icon> CSV
               </button>
-              <button mat-flat-button color="primary" (click)="viewReport(report)">
+              <button mat-stroked-button color="primary" (click)="viewReport(report)">
                 <mat-icon>visibility</mat-icon> View
               </button>
             </div>

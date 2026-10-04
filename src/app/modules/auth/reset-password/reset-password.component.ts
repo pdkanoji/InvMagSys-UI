@@ -32,7 +32,7 @@ import { AuthService } from '../../../core/services/auth.service';
           <input matInput [type]="show ? 'text' : 'password'" formControlName="confirm" />
           <mat-error *ngIf="form.hasError('mismatch')">Passwords do not match</mat-error>
         </mat-form-field>
-        <button mat-flat-button color="primary" type="submit" class="auth-submit" [disabled]="form.invalid || loading">
+        <button mat-stroked-button color="primary" type="submit" class="auth-submit" [disabled]="form.invalid || loading">
           {{ loading ? 'Resetting...' : 'Reset Password' }}
         </button>
       </form>

@@ -67,7 +67,7 @@ import { selectAuthLoading, selectAuthError } from '../../../store/auth/auth.sel
           <a routerLink="/auth/forgot-password">Forgot Password?</a>
         </div>
 
-        <button mat-flat-button type="submit" class="auth-submit"
+        <button mat-stroked-button type="submit" class="auth-submit"
           [disabled]="loginForm.invalid || (loading$ | async)">
           <mat-spinner diameter="20" *ngIf="loading$ | async; else btnText"></mat-spinner>
           <ng-template #btnText>Login</ng-template>

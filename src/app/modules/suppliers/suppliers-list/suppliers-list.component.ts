@@ -23,7 +23,7 @@ import { Supplier } from '../../../core/models/inventory.model';
     <div class="page-wrapper">
       <div class="page-header">
         <div><h1 class="page-title">Suppliers</h1><p class="page-subtitle">Manage your suppliers</p></div>
-        <a mat-flat-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Supplier</a>
+        <a mat-stroked-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Supplier</a>
       </div>
       <mat-card class="table-card">
         <mat-card-content>

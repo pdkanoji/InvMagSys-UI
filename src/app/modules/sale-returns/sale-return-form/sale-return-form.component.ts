@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../core/services/api.service';
 import { Sale } from '../../../core/models/inventory.model';
+import { ClearZeroOnFocusDirective } from '../../../shared/directives/clear-zero-on-focus.directive';
 
 @Component({
   selector: 'app-sale-return-form',
@@ -21,7 +22,7 @@ import { Sale } from '../../../core/models/inventory.model';
     CommonModule, RouterLink, ReactiveFormsModule,
     MatCardModule, MatButtonModule, MatIconModule,
     MatFormFieldModule, MatInputModule, MatSelectModule,
-    MatDatepickerModule, MatNativeDateModule,
+    MatDatepickerModule, MatNativeDateModule, ClearZeroOnFocusDirective,
   ],
   template: `
     <div class="page-wrapper">
@@ -107,7 +108,7 @@ import { Sale } from '../../../core/models/inventory.model';
 
             <div style="display:flex;gap:12px;justify-content:flex-end;">
               <a mat-stroked-button routerLink="/sale-returns">Cancel</a>
-              <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || itemsArray.length === 0 || saving">
+              <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid || itemsArray.length === 0 || saving">
                 {{ saving ? 'Saving...' : 'Create Return' }}
               </button>
             </div>

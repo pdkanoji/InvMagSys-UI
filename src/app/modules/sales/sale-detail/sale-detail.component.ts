@@ -40,12 +40,14 @@ import { Sale } from '../../../core/models/inventory.model';
             <ng-container matColumnDef="product"><th mat-header-cell *matHeaderCellDef>Product</th><td mat-cell *matCellDef="let r">{{ r.product?.name }}</td></ng-container>
             <ng-container matColumnDef="quantity"><th mat-header-cell *matHeaderCellDef>Quantity</th><td mat-cell *matCellDef="let r">{{ r.quantity }}</td></ng-container>
             <ng-container matColumnDef="unit_price"><th mat-header-cell *matHeaderCellDef>Unit Price</th><td mat-cell *matCellDef="let r">{{ r.unit_price | currency:'INR' }}</td></ng-container>
+            <ng-container matColumnDef="discount"><th mat-header-cell *matHeaderCellDef>Discount</th><td mat-cell *matCellDef="let r">{{ r.discount_percentage || 0 }}%</td></ng-container>
             <ng-container matColumnDef="total"><th mat-header-cell *matHeaderCellDef>Total</th><td mat-cell *matCellDef="let r">{{ r.total_price | currency:'INR' }}</td></ng-container>
             <tr mat-header-row *matHeaderRowDef="cols"></tr>
             <tr mat-row *matRowDef="let row; columns: cols;" class="table-row"></tr>
           </table>
           <div class="order-summary">
             <div class="summary-row"><span>Subtotal:</span><span>{{ sale.subtotal | currency:'INR' }}</span></div>
+            <div class="summary-row"><span>Total Discount:</span><span>{{ sale.discount_amount | currency:'INR' }}</span></div>
             <div class="summary-row"><span>Tax:</span><span>{{ sale.tax_amount | currency:'INR' }}</span></div>
             <div class="summary-row summary-total"><span>Total:</span><span>{{ sale.total_amount | currency:'INR' }}</span></div>
           </div>
@@ -55,7 +57,7 @@ import { Sale } from '../../../core/models/inventory.model';
   `,
 })
 export class SaleDetailComponent implements OnInit {
-  sale: Sale | null = null; cols = ['product','quantity','unit_price','total'];
+  sale: Sale | null = null; cols = ['product','quantity','unit_price','discount','total'];
   private api = inject(ApiService); private route = inject(ActivatedRoute); private snackBar = inject(MatSnackBar);
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

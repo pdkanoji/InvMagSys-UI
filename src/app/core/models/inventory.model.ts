@@ -10,6 +10,7 @@ export interface Product {
   purchase_price: number;
   selling_price: number;
   tax_percentage: number;
+  discount_percentage?: number;
   reorder_level: number;
   image_url?: string;
   is_active: boolean;

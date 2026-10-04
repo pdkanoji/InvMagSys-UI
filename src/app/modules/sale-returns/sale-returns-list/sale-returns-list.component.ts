@@ -29,7 +29,7 @@ import { SaleReturn } from '../../../core/models/inventory.model';
     <div class="page-wrapper">
       <div class="page-header">
         <div><h1 class="page-title">Sale Returns</h1><p class="page-subtitle">Manage customer return requests</p></div>
-        <a *ngIf="(perms$ | async)?.create" mat-flat-button color="primary" routerLink="new">
+        <a *ngIf="(perms$ | async)?.create" mat-stroked-button color="primary" routerLink="new">
           <mat-icon>add</mat-icon> New Return
         </a>
       </div>

@@ -13,12 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { ApiService } from '../../../core/services/api.service';
 import { createProduct, updateProduct } from '../../../store/product/product.actions';
+import { ClearZeroOnFocusDirective } from '../../../shared/directives/clear-zero-on-focus.directive';
 
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatCardModule, MatSlideToggleModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatCardModule, MatSlideToggleModule, MatIconModule, ClearZeroOnFocusDirective],
   template: `
     <div class="page-wrapper">
       <div class="page-header">
@@ -118,7 +119,7 @@ import { createProduct, updateProduct } from '../../../store/product/product.act
 
             <div class="form-actions form-col-full">
               <a mat-stroked-button routerLink="/products">Cancel</a>
-              <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+              <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid || loading">
                 {{ loading ? 'Saving...' : (isEdit ? 'Update Product' : 'Create Product') }}
               </button>
             </div>

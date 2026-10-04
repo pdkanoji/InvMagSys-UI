@@ -21,7 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
         <div><h1 class="page-title">Notifications</h1></div>
         <div class="header-actions">
           <button mat-stroked-button (click)="checkStock()"><mat-icon>refresh</mat-icon> Check Stock</button>
-          <button mat-flat-button (click)="markAllRead()"><mat-icon>done_all</mat-icon> Mark All Read</button>
+          <button mat-stroked-button (click)="markAllRead()"><mat-icon>done_all</mat-icon> Mark All Read</button>
         </div>
       </div>
       <mat-card class="table-card">

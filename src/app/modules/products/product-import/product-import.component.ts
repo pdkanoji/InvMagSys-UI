@@ -31,7 +31,7 @@ import { ProductService } from '../../../core/services/product.service';
               <button mat-stroked-button color="primary" (click)="downloadSample()"><mat-icon>download</mat-icon> Download Sample</button>
               <label class="file-picker">
                 <input type="file" accept=".csv,.xlsx,.xls" (change)="onFileSelected($event)" />
-                <span mat-flat-button color="primary">Choose file</span>
+                <span mat-stroked-button color="primary">Choose file</span>
               </label>
             </div>
 

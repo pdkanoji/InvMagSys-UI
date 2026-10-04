@@ -32,7 +32,7 @@ interface ConfirmDialogData {
       </div>
       <div class="dialog-actions">
         <button mat-stroked-button class="dialog-secondary-btn" mat-dialog-close>Cancel</button>
-        <button mat-flat-button class="dialog-danger-btn" [mat-dialog-close]="true">{{ confirmText }}</button>
+        <button mat-stroked-button class="dialog-danger-btn" [mat-dialog-close]="true">{{ confirmText }}</button>
       </div>
     </div>
   `,

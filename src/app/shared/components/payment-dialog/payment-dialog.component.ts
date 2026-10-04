@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from '../../../core/services/api.service';
+import { ClearZeroOnFocusDirective } from '../../directives/clear-zero-on-focus.directive';
 
 export interface PaymentDialogData {
   saleId: string;
@@ -26,17 +27,17 @@ export interface PaymentDialogData {
     CommonModule, ReactiveFormsModule, MatDialogModule,
     MatFormFieldModule, MatInputModule, MatSelectModule,
     MatButtonModule, MatIconModule, MatDatepickerModule, MatNativeDateModule,
-    MatProgressSpinnerModule,
+    MatProgressSpinnerModule, ClearZeroOnFocusDirective,
   ],
   template: `
     <div class="dialog-shell dialog-shell--compact">
-      <button mat-icon-button class="dialog-close-btn" (click)="dialogRef.close()">
-        <mat-icon>close</mat-icon>
-      </button>
       <div class="dialog-header">
-        <div class="dialog-icon dialog-icon--info">
+        <button mat-icon-button class="dialog-close-btn" (click)="dialogRef.close()">
+          <mat-icon>close</mat-icon>
+        </button>
+       <!-- <div class="dialog-icon dialog-icon--info">
           <mat-icon>payments</mat-icon>
-        </div>
+        </div>-->
         <div>
           <h2 mat-dialog-title class="dialog-title">Record Payment</h2>
           <p class="dialog-subtitle">
@@ -84,7 +85,7 @@ export interface PaymentDialogData {
 
       <mat-dialog-actions align="end" class="dialog-actions">
         <button mat-stroked-button class="dialog-secondary-btn" mat-dialog-close [disabled]="saving">Cancel</button>
-        <button mat-flat-button class="dialog-primary-btn" (click)="submit()" [disabled]="form.invalid || saving">
+        <button mat-stroked-button class="dialog-primary-btn" (click)="submit()" [disabled]="form.invalid || saving">
           <mat-spinner *ngIf="saving" diameter="18" style="display:inline-block;margin-right:6px;"></mat-spinner>
           Record Payment
         </button>

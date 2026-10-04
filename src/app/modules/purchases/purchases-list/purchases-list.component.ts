@@ -31,7 +31,7 @@ import { Purchase } from '../../../core/models/inventory.model';
     <div class="page-wrapper">
       <div class="page-header">
         <div><h1 class="page-title">Purchase Orders</h1><p class="page-subtitle">Manage purchase orders</p></div>
-        <a *ngIf="(purchasePerms$ | async)?.create" mat-flat-button color="primary" routerLink="new">
+        <a *ngIf="(purchasePerms$ | async)?.create" mat-stroked-button color="primary" routerLink="new">
           <mat-icon>add</mat-icon> New Purchase
         </a>
       </div>

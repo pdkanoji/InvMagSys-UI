@@ -43,20 +43,20 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
           </div>
         </div>
 
-        <div class="topbar-search">
+        <!--<div class="topbar-search">
           <mat-icon class="topbar-search__icon">search</mat-icon>
           <input class="topbar-search__input" placeholder="Search anything..." />
-        </div>
+        </div>-->
 
         <span class="spacer"></span>
 
         <div class="topbar-actions">
-          <div class="topbar-notif-badge">
+         <!-- <div class="topbar-notif-badge">
             <button mat-icon-button class="topbar-icon-btn" (click)="checkStock()" title="Notifications">
               <mat-icon>notifications_none</mat-icon>
             </button>
             <span class="notif-dot"></span>
-          </div>
+          </div>-->
 
           <button class="topbar-user" [matMenuTriggerFor]="userMenu">
             <div class="topbar-user__avatar">{{ initials$ | async }}</div>
@@ -136,7 +136,7 @@ import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.comp
                 <a *ngIf="perms['reports']?.view" routerLink="/reports" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
                   <mat-icon>bar_chart</mat-icon><span>Reports</span>
                 </a>
-                <a *ngIf="(userRole$ | async) === 'super_admin' || (userRole$ | async) === 'admin'" routerLink="/roles" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
+                <a *ngIf="perms['roles']?.view" routerLink="/roles" routerLinkActive="active" class="nav-item" (click)="onNavClick()">
                   <mat-icon>admin_panel_settings</mat-icon><span>Roles</span>
                 </a>
                 <a *ngIf="perms['users']?.view" routerLink="/users" routerLinkActive="active" class="nav-item" (click)="onNavClick()">

@@ -23,7 +23,7 @@ import { Category } from '../../../core/models/inventory.model';
     <div class="page-wrapper">
       <div class="page-header">
         <div><h1 class="page-title">Categories</h1><p class="page-subtitle">Manage product categories</p></div>
-        <a mat-flat-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Category</a>
+        <a mat-stroked-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Category</a>
       </div>
       <mat-card class="table-card">
         <mat-card-content>

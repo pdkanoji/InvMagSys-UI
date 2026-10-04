@@ -32,7 +32,7 @@ import { selectAuthLoading, selectAuthError } from '../../../store/auth/auth.sel
           <input matInput type="email" formControlName="email" />
           <mat-error>Valid email required</mat-error>
         </mat-form-field>
-        <button mat-flat-button color="primary" type="submit" class="auth-submit" [disabled]="form.invalid || (loading$ | async)">
+        <button mat-stroked-button color="primary" type="submit" class="auth-submit" [disabled]="form.invalid || (loading$ | async)">
           <mat-spinner diameter="20" *ngIf="loading$ | async; else btnText"></mat-spinner>
           <ng-template #btnText>Send Reset Link</ng-template>
         </button>

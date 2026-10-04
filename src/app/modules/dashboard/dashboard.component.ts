@@ -43,15 +43,15 @@ Chart.register(...registerables);
             <mat-label>Search dashboard</mat-label>
             <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Search activities" />
             <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>-->
-          <button *ngIf="isMobile" mat-flat-button color="primary" routerLink="/sales">
+          </mat-form-field>
+          <button *ngIf="isMobile" mat-stroked-button color="primary" routerLink="/sales">
             <mat-icon>point_of_sale</mat-icon>
             Sales
           </button>
           <div class="dashboard-date">
             <mat-icon>calendar_today</mat-icon>
             <span>{{ dateRangeLabel }}</span>
-          </div>
+          </div>-->
         </div>
       </div>
 

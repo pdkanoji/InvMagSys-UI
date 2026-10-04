@@ -13,6 +13,7 @@ import { loadRoles, deleteRole, deleteRoleSuccess, deleteRoleFailure } from '../
 import { selectRoles, selectRolesTotal } from '../../../store/roles/roles.selectors';
 import { selectUserRole } from '../../../store/auth/auth.selectors';
 import { Role } from '../../../core/models/role.model';
+import { RolesService } from '../../../core/services/roles.service';
 import { RoleFormDialogComponent } from '../role-form-dialog/role-form-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
@@ -33,7 +34,7 @@ import { Actions, ofType } from '@ngrx/effects';
           <h1 class="page-title">Roles</h1>
           <p class="page-subtitle">Manage user roles and access levels</p>
         </div>
-        <button mat-flat-button color="primary" *ngIf="(userRole$ | async) === 'super_admin'" (click)="openCreate()">
+        <button mat-stroked-button color="primary" *ngIf="(userRole$ | async) === 'super_admin'" (click)="openCreate()">
           <mat-icon>add</mat-icon> Create Role
         </button>
       </div>
@@ -114,6 +115,7 @@ export class RolesListComponent implements OnInit, OnDestroy {
   private actions$ = inject(Actions);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private rolesService = inject(RolesService);
   private destroy$ = new Subject<void>();
 
   roles$ = this.store.select(selectRoles);
@@ -146,7 +148,12 @@ export class RolesListComponent implements OnInit, OnDestroy {
   }
 
   openCreate(): void {
-    this.dialog.open(RoleFormDialogComponent, { width: '480px', data: {} })
+    this.dialog.open(RoleFormDialogComponent, {
+      width: '860px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: {},
+    })
       .afterClosed().subscribe(saved => {
         if (saved) {
           this.snackBar.open('Role created', 'Close', { duration: 2500 });
@@ -156,13 +163,25 @@ export class RolesListComponent implements OnInit, OnDestroy {
   }
 
   openEdit(role: Role): void {
-    this.dialog.open(RoleFormDialogComponent, { width: '480px', data: { role } })
+    this.rolesService.getById(role.id).pipe(takeUntil(this.destroy$)).subscribe({
+      next: ({ data }) => this.dialog.open(RoleFormDialogComponent, {
+        width: '860px',
+        maxWidth: '95vw',
+        maxHeight: '90vh',
+        data: { role: data },
+      })
       .afterClosed().subscribe(saved => {
         if (saved) {
           this.snackBar.open('Role updated', 'Close', { duration: 2500 });
           this.load();
         }
-      });
+      }),
+      error: err => this.snackBar.open(
+        err.error?.message || 'Failed to load role permissions',
+        'Close',
+        { duration: 3000 },
+      ),
+    });
   }
 
   onDelete(role: Role): void {

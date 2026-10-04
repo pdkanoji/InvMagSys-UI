@@ -187,17 +187,15 @@ img { max-width: 100%; height: auto; }
   border-radius: 0 8px 8px 0 !important;
 }
 
-/* ---- Solid opaque backgrounds (remove transparency) ---- */
+/* ---- Solid opaque backgrounds (remove transparency) ----*/
 .mat-mdc-text-field-wrapper { background: #ffffff !important; }
 .mat-mdc-select-panel,
 .mat-select-panel { background: #ffffff !important; }
 .mat-mdc-autocomplete-panel { background: #ffffff !important; }
 .mat-mdc-menu-panel,
 .mat-menu-panel { background: #ffffff !important; }
-.mat-mdc-dialog-container,
-.mat-dialog-container { background: #ffffff !important; }
 .cdk-overlay-container .mat-mdc-select-panel { background: #ffffff !important; }
-
+ 
 /* ---- Uniform field height (42px) ---- */
 .mat-mdc-form-field-infix {
   min-height: 42px !important;
@@ -211,6 +209,59 @@ img { max-width: 100%; height: auto; }
 .mdc-text-field__input { padding-left: 12px !important; }
 .mat-mdc-select-value,
 .mat-mdc-select-placeholder { padding-left: 12px !important; }
+
+/* ---- Align currency prefix with input value and reduce spacing ---- */
+.mat-mdc-form-field-icon-prefix,
+.mat-mdc-form-field-icon-suffix,
+.mat-mdc-form-field-text-prefix,
+.mat-mdc-form-field-text-suffix {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--neutral-500) !important;
+  line-height: 1 !important;
+  margin-inline-end: 4px !important;
+}
+
+.mat-mdc-form-field-icon-prefix + .mat-mdc-form-field-infix .mat-mdc-input-element,
+.mat-mdc-form-field-icon-prefix + .mat-mdc-form-field-infix .mdc-text-field__input,
+.mat-mdc-form-field-text-prefix + .mat-mdc-form-field-infix .mat-mdc-input-element,
+.mat-mdc-form-field-text-prefix + .mat-mdc-form-field-infix .mdc-text-field__input {
+  padding-left: 0 !important;
+}
+
+.mat-mdc-form-field-icon-prefix mat-icon,
+.mat-mdc-form-field-text-prefix {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.mdc-text-field__input::placeholder,
+.mat-mdc-input-element::placeholder,
+textarea::placeholder {
+  color: var(--neutral-400) !important;
+  opacity: 1 !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  position: relative !important;
+  top: 0 !important;
+}
+
+.mdc-text-field__input,
+.mat-mdc-input-element,
+textarea {
+  line-height: 1.2 !important;
+  vertical-align: middle !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.mdc-text-field__input::-webkit-outer-spin-button,
+.mdc-text-field__input::-webkit-inner-spin-button {
+  margin: 0;
+}
 
 /* ---- Dropdown arrow inside field (not edge) ---- */
 .mat-mdc-select-arrow-wrapper {
@@ -238,6 +289,24 @@ img { max-width: 100%; height: auto; }
   font-size: var(--text-sm) !important;
 }
 
+/* ---- Datepicker popup ---- */
+.mat-datepicker-content,
+.mat-mdc-datepicker-content,
+.mat-datepicker-popup,
+.mat-datepicker-content-container,
+.mat-calendar {
+  background: #ffffff !important;
+  border: 1px solid var(--neutral-200) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+  overflow: hidden !important;
+  z-index: 3000 !important;
+}
+
+.cdk-overlay-pane {
+  z-index: 3000 !important;
+}
+
 .mdc-floating-label { font-size: var(--text-sm) !important; color: var(--neutral-500) !important; }
 .mat-mdc-snack-bar-container { border-radius: var(--r-lg) !important; }
 .mat-mdc-paginator { background: transparent !important; }
@@ -259,7 +328,7 @@ img { max-width: 100%; height: auto; }
 .dialog-shell {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
+  gap: var(--sp-1);
   padding: var(--sp-5);
 }
 
@@ -1852,8 +1921,17 @@ img { max-width: 100%; height: auto; }
 .payment-form {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
+  gap: var(--sp-1);
   padding-top: var(--sp-2);
+}
+
+.dialog-title.mat-mdc-dialog-title {
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    margin: -19px 2px 1px;
+    padding: var(--mat-dialog-headline-padding, 2px 40px 2px);
 }
 
 .payment-form mat-form-field {
@@ -1867,6 +1945,10 @@ img { max-width: 100%; height: auto; }
   background: #fff5f5;
   border-radius: var(--r-sm);
   border: 1px solid #fca5a5;
+}
+mat-error {
+  color: #dc2626 !important;
+  font-size: 12px;
 }
 
 /* ── Returns modules ────────────────────────────────────────────────────── */

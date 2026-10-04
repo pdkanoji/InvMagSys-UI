@@ -32,7 +32,7 @@ import { ProductService } from '../../../core/services/product.service';
         <div class="header-actions">
           <button mat-stroked-button (click)="onExport()"><mat-icon>download</mat-icon> Export</button>
           <a mat-stroked-button routerLink="import"><mat-icon>upload</mat-icon> Import</a>
-          <a mat-flat-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Product</a>
+          <a mat-stroked-button color="primary" routerLink="new"><mat-icon>add</mat-icon> Add Product</a>
         </div>
       </div>
 

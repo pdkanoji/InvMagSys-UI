@@ -36,7 +36,7 @@ import { Warehouse } from '../../../core/models/inventory.model';
           </nav>
           <h1 class="page-title">Warehouse Management</h1>
         </div>
-        <a mat-flat-button color="primary" routerLink="new">
+        <a mat-stroked-button color="primary" routerLink="new">
           <mat-icon>add</mat-icon> Add Warehouse
         </a>
       </div>

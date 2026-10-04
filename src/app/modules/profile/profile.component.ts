@@ -54,7 +54,7 @@ import { selectCurrentUser } from '../../store/auth/auth.selectors';
                   <mat-form-field appearance="outline"><mat-label>Last Name</mat-label><input matInput formControlName="last_name" /></mat-form-field>
                   <mat-form-field appearance="outline" class="form-col-full"><mat-label>Phone</mat-label><input matInput formControlName="phone" /></mat-form-field>
                   <div class="form-actions form-col-full">
-                    <button mat-flat-button color="primary" type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Update Profile' }}</button>
+                    <button mat-stroked-button color="primary" type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Update Profile' }}</button>
                   </div>
                 </form>
               </mat-tab>
@@ -64,7 +64,7 @@ import { selectCurrentUser } from '../../store/auth/auth.selectors';
                   <mat-form-field appearance="outline" class="form-col-full"><mat-label>New Password</mat-label><input matInput type="password" formControlName="new_password" /><mat-error>Min 8 characters</mat-error></mat-form-field>
                   <mat-form-field appearance="outline" class="form-col-full"><mat-label>Confirm Password</mat-label><input matInput type="password" formControlName="confirm_password" /></mat-form-field>
                   <div class="form-actions form-col-full">
-                    <button mat-flat-button color="primary" type="submit" [disabled]="passwordLoading">{{ passwordLoading ? 'Updating...' : 'Change Password' }}</button>
+                    <button mat-stroked-button color="primary" type="submit" [disabled]="passwordLoading">{{ passwordLoading ? 'Updating...' : 'Change Password' }}</button>
                   </div>
                 </form>
               </mat-tab>

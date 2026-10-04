@@ -1,3 +1,5 @@
+import { ModulePermissions } from './permissions.model';
+
 export interface Role {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export interface Role {
   created_at: string;
   updated_at?: string;
   created_by_user?: { first_name: string; last_name: string } | null;
+  permissions?: ModulePermissions;
 }
 
 export interface RolesState {
